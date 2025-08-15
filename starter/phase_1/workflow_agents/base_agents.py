@@ -1,4 +1,5 @@
 # TODO: 1 - import the OpenAI class from the openai library
+from openai import OpenAI
 import numpy as np
 import pandas as pd
 import re
@@ -6,33 +7,36 @@ import csv
 import uuid
 from datetime import datetime
 
-'''
 # DirectPromptAgent class definition
 class DirectPromptAgent:
     
     def __init__(self, openai_api_key):
         # Initialize the agent
         # TODO: 2 - Define an attribute named openai_api_key to store the OpenAI API key provided to this class.
+        self.openai_api_key = openai_api_key
 
     def respond(self, prompt):
         # Generate a response using the OpenAI API
         client = OpenAI(api_key=self.openai_api_key)
         response = client.chat.completions.create(
-            model=# TODO: 3 - Specify the model to use (gpt-3.5-turbo)
+            model="gpt-3.5-turbo",
             messages=[
                 # TODO: 4 - Provide the user's prompt here. Do not add a system prompt.
+                {"role": "user", "content": prompt}
             ],
             temperature=0
-        )
-        # TODO: 5 - Return only the textual content of the response (not the full JSON response).
-'''
-        
-'''
+        )                # TODO: 4 - Provide the user's prompt here. Do not add a system prompt.
+
+        # TODO: 5 - Return only the textual content of the response (not the full JSON response)
+        return response.choices[0].message.content
+
+
 # AugmentedPromptAgent class definition
 class AugmentedPromptAgent:
     def __init__(self, openai_api_key, persona):
         """Initialize the agent with given attributes."""
         # TODO: 1 - Create an attribute for the agent's persona
+        self.persona = persona
         self.openai_api_key = openai_api_key
 
     def respond(self, input_text):
@@ -43,14 +47,13 @@ class AugmentedPromptAgent:
         response = client.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=[
-                # TODO: 3 - Add a system prompt instructing the agent to assume the defined persona and explicitly forget previous context.
+                {"role" : "system", "content": f"You are {self.persona}. Provide accurate responses."},
                 {"role": "user", "content": input_text}
             ],
             temperature=0
         )
 
-        return  # TODO: 4 - Return only the textual content of the response, not the full JSON payload.
-'''
+        return response.choices[0].message.content   # TODO: 4 - Return only the textual content of the response, not the full JSON payload.
 
 '''
 # KnowledgeAugmentedPromptAgent class definition
