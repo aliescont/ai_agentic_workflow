@@ -20,13 +20,12 @@ class DirectPromptAgent:
         response = client.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=[
-                # TODO: 4 - Provide the user's prompt here. Do not add a system prompt.
+            
                 {"role": "user", "content": prompt}
             ],
             temperature=0
-        )                # TODO: 4 - Provide the user's prompt here. Do not add a system prompt.
+        )                
 
-        # TODO: 5 - Return only the textual content of the response (not the full JSON response)
         return response.choices[0].message.content
 
 
@@ -41,11 +40,10 @@ class AugmentedPromptAgent:
         """Generate a response using OpenAI API."""
         client = OpenAI(api_key=self.openai_api_key)
 
-        # TODO: 2 - Declare a variable 'response' that calls OpenAI's API for a chat completion.
         response = client.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=[
-                {"role" : "system", "content": f"You are {self.persona}. Provide accurate responses."},
+                {"role" : "system", "content": f"{self.persona}. It's mandatory to adapt your tone and style to match the persona provided. Forget all previous context."},
                 {"role": "user", "content": input_text}
             ],
             temperature=0
@@ -59,7 +57,6 @@ class KnowledgeAugmentedPromptAgent:
     def __init__(self, openai_api_key, persona, knowledge):
         """Initialize the agent with provided attributes."""
         self.persona = persona
-        # TODO: 1 - Create an attribute to store the agent's knowledge.
         self.knowledge = knowledge
         self.openai_api_key = openai_api_key
 
@@ -70,18 +67,12 @@ class KnowledgeAugmentedPromptAgent:
             model="gpt-3.5-turbo",
             messages=[
                 {"role": "system", 
-                 "content": f"""You are {self.persona} knowledge-based assistant. Forget all previous context. 
+                 "content": f"""You should adapt your responses as knowledge-based assistant acting as {self.persona}. 
+                 Forget all previous context. 
                  Use only the following knowledge to answer: {self.knowledge}. Do not use your own knowledge.
+                 Answer the prompt based on this {self.knowledge}, not your own.
                  """},
-                # TODO: 2 - Construct a system message including:
-                #           - The persona with the following instruction:
-                #             "You are _persona_ knowledge-based assistant. Forget all previous context."
-                #           - The provided knowledge with this instruction:
-                #             "Use only the following knowledge to answer, do not use your own knowledge: _knowledge_"
-                #           - Final instruction:
-                #             "Answer the prompt based on this knowledge, not your own."
-                
-                # TODO: 3 - Add the user's input prompt here as a user message.
+ 
                 {"role": "user", "content": input_text}
             ],
             temperature=0
@@ -308,7 +299,6 @@ class RoutingAgent():
         # Initialize the agent with given attributes
         self.openai_api_key = openai_api_key
         self.agents = agents
-        # TODO: 1 - Define an attribute to hold the agents, call it agents
 
     def get_embedding(self, text):
         client = OpenAI(api_key=self.openai_api_key)
@@ -316,28 +306,23 @@ class RoutingAgent():
             model="text-embedding-3-large",
             input=text
         )
-        # TODO: 2 - Write code to calculate the embedding of the text using the text-embedding-3-large model
         # Extract and return the embedding vector from the response
         embedding = response.data[0].embedding
         return embedding 
 
-    # TODO: 3 - Define a method to route user prompts to the appropriate agent
     def route_prompt(self, user_input):
-        # TODO: 4 - Compute the embedding of the user input prompt
         input_emb = self.get_embedding(user_input)
         best_agent = None
         best_score = -1
 
         for agent in self.agents:
             agent_emb = self.get_embedding(agent["description"])
-            # TODO: 5 - Compute the embedding of the agent description
             if agent_emb is None:
                 continue
 
             similarity = np.dot(input_emb, agent_emb) / (np.linalg.norm(input_emb) * np.linalg.norm(agent_emb))
             print(similarity)
 
-            # TODO: 6 - Add logic to select the best agent based on the similarity score between the user prompt and the agent descriptions
             if similarity > best_score:
                 best_score = similarity
                 best_agent = agent

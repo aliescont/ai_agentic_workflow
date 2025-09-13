@@ -1,4 +1,3 @@
-# TODO: 1 - Import the KnowledgeAugmentedPromptAgent class from workflow_agents
 from workflow_agents.base_agents import KnowledgeAugmentedPromptAgent
 import os
 from dotenv import load_dotenv

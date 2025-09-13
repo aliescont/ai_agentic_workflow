@@ -1,4 +1,3 @@
-# TODO: 1 - Import EvaluationAgent and KnowledgeAugmentedPromptAgent classes
 from workflow_agents.base_agents import EvaluationAgent, KnowledgeAugmentedPromptAgent
 import os
 from dotenv import load_dotenv
@@ -17,7 +16,6 @@ knowledge_agent = KnowledgeAugmentedPromptAgent(
     persona=persona,
     knowledge=knowledge
 )
-# TODO: 2 - Instantiate the KnowledgeAugmentedPromptAgent here
 
 # Parameters for the Evaluation Agent
 persona = "You are an evaluation agent that checks the answers of other worker agents"
@@ -29,8 +27,6 @@ evaluation_agent = EvaluationAgent(
     worker_agent=knowledge_agent,
     max_interactions=10
 )
-# TODO: 3 - Instantiate the EvaluationAgent with a maximum of 10 interactions here
 
-# TODO: 4 - Evaluate the prompt and print the response from the EvaluationAgent
 evaluation_response = evaluation_agent.evaluate(prompt)    
 print(evaluation_response)
