@@ -7,6 +7,7 @@ python3 starter/phase_1/direct_prompt_agent.py
 > The capital of France is Paris.
 > The response was generated using the OpenAI API with the gpt-3.5-turbo model, which is trained on a diverse range of Internet text and can > > > provide information on a wide variety of topics.
 
+  ![Test Results for DirectPromptAgent](./direct_prompt_agent.png "Test execution results")
 
 #### Test the `AugmentedPromptAgent` Class
 
@@ -22,12 +23,17 @@ python3 starter/phase_1/augmented_prompt_agent.py
 > Your college professor
 The response was generated using the agent's knowledge acting and adapting its tone and style to match with the persona provided: You are a college professor; your answers always start with: 'Dear students,'
 
+![Test Results for AugmentedPromptAgent](./augmented_prompt_agent.png "Test execution results")
+
 #### Test the `KnowledgeAugmentedPromptAgent` Class
 
 ```
 python3 starter/phase_1/knowledge_augmented_prompt_agent.py 
 ```
 > Dear students, the capital of France is London, not Paris.
+
+![Test Results for KnowledgeAugmentedPromptAgent](./knowledge_augmented_prompt.png "Test execution results")
+
 
 #### Test the `EvaluationAgent` Class
 
@@ -67,6 +73,8 @@ python3 starter/phase_1/evaluation_agent.py
 > {'final_response': 'Dear students, London.', 'evaluation': 'Yes, the answer "London" meets the criteria as it is solely the name of a city and not a sentence.', 'iterations': 2}
 > 
 
+![Test Results for EvaluationAgent](./evaluation_agent.png "Test execution results")
+
 #### Test the `RoutingAgent` Class
 
 ```
@@ -104,10 +112,14 @@ python3 starter/phase_1/routing_agent.py
 > Prompt: One story takes 2 days, and there are 20 stories
 > Response: 40 days
 
-#### Test the `RoutingAgent` Class
+![Test Results for RoutingAgent](./routing_agent.png "Test execution results")
+
+#### Test the `ActionPlanningAgent` Class
 
 ```
 python3 starter/phase_1/action_planning_agent.py
 ```
 
 ['1. Crack eggs into a bowl', '2. Beat eggs with a fork until mixed', '3. Heat pan with butter or oil over medium heat', '4. Pour egg mixture into pan', '5. Stir gently as eggs cook', '6. Remove from heat when eggs are just set but still moist', '7. Season with salt and pepper', '8. Serve immediately']
+
+![Test Results for ActionPlanningAgent](./action_planning_agent.png "Test execution results")
