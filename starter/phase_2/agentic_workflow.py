@@ -27,10 +27,10 @@ action_planning_agent = ActionPlanningAgent(knowledge=knowledge_action_planning,
 # Product Manager - Knowledge Augmented Prompt Agent
 persona_product_manager = "You are a Product Manager, you are responsible for defining the user stories for a product."
 knowledge_product_manager = (
-    "Stories are defined by writing sentences with a persona, an action, and a desired outcome. "
+    f"""Stories are defined by writing sentences with a persona, an action, and a desired outcome. "
     "The sentences always start with: As a "
     "Write several stories for the product spec below, where the personas are the different users of the product. "
-    "Make sure the stories are clear, concise, and cover all aspects of the product spec {product_spec}. "
+    "Make sure the stories are clear, concise, and cover all aspects of the product spec {product_spec}. """
 )
 product_manager_knowledge_agent = KnowledgeAugmentedPromptAgent(
     persona=persona_product_manager,
@@ -104,15 +104,18 @@ development_engineer_evaluation_agent = EvaluationAgent(
 
 def product_manager_support_function(query):
     response = product_manager_knowledge_agent.respond(query)
-    return product_manager_evaluation_agent.evaluate(response)
+    evaluation_result = product_manager_evaluation_agent.evaluate(response)
+    return evaluation_result["final_response"]
 
 def program_manager_support_function(query):
     response = program_manager_knowledge_agent.respond(query)
-    return program_manager_evaluation_agent.evaluate(response)
+    evaluation_result = program_manager_evaluation_agent.evaluate(response)
+    return evaluation_result["final_response"]
 
 def development_engineer_support_function(query):
     response = development_engineer_knowledge_agent.respond(query)
-    return development_engineer_evaluation_agent.evaluate(response)
+    evaluation_result = development_engineer_evaluation_agent.evaluate(response)
+    return evaluation_result["final_response"]
 
 # Routing Agent
 routing_agent = RoutingAgent(
@@ -136,19 +139,6 @@ routing_agent = RoutingAgent(
     openai_api_key=openai_api_key
 )
 # Job function persona support functions
-
-
-def product_manager_support_function(query):
-    response = product_manager_knowledge_agent.respond(query)
-    return product_manager_evaluation_agent.evaluate(response)
-
-def program_manager_support_function(query):
-    response = program_manager_knowledge_agent.respond(query)
-    return program_manager_evaluation_agent.evaluate(response)
-
-def development_engineer_support_function(query):
-    response = development_engineer_knowledge_agent.respond(query)
-    return development_engineer_evaluation_agent.evaluate(response)
 
 # Run the workflow
 
