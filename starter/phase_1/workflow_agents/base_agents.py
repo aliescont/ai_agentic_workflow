@@ -348,11 +348,10 @@ class ActionPlanningAgent:
         client = OpenAI(api_key=self.openai_api_key)
         # TODO: 3 - Call the OpenAI API to get a response from the "gpt-3.5-turbo" model.
         # Provide the following system prompt along with the user's prompt:
-        # "You are an action planning agent. Using your knowledge, you extract from the user prompt the steps requested to complete the action the user is asking for. You return the steps as a list. Only return the steps in your knowledge. Forget any previous context. This is your knowledge: {pass the knowledge here}"
         response = client.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=[
-                {"role": "system", "content": f"You are an action planning agent. Using your knowledge, you extract from the user prompt the steps requested to complete the action the user is asking for. You return the steps as a list. Only return the steps in your knowledge. Forget any previous context. This is your knowledge: {self.knowledge}"},
+                {"role": "system", "content": f"You are an action planning agent. Extract the specific actionable steps from the user's prompt. Return ONLY the steps as a numbered list, one step per line. Do not add explanations or descriptions. Use this knowledge as context: {self.knowledge}"},
                 {"role": "user", "content": prompt}
             ]
         )
@@ -361,5 +360,21 @@ class ActionPlanningAgent:
         # TODO: 5 - Clean and format the extracted steps by removing empty lines and unwanted text
         steps = response_text.split("\n")
 
-        return steps
+        # Filter out empty lines, whitespace-only lines, and irrelevant fragments
+        cleaned_steps = []
+        for step in steps:
+            step = step.strip()  # Remove leading/trailing whitespace
+
+            # Skip empty lines, headers, and short fragments
+            if not step or len(step) < 15:
+                continue
+            if step.startswith("**") or step.startswith("#"):  # Skip markdown headers
+                continue
+            if step.endswith(":") and len(step) < 30:  # Skip section headers like "User Stories:"
+                continue
+
+            # Keep all remaining non-empty, meaningful steps
+            cleaned_steps.append(step)
+
+        return cleaned_steps
 
