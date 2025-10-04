@@ -63,6 +63,8 @@ persona_program_manager = "You are a Program Manager, you are responsible for de
 # knowledge_program_manager = "Features of a product are defined by organizing similar user stories into cohesive groups."
 knowledge_program_manager = (
     f"Features of a product are defined by organizing similar user stories into cohesive groups"
+    f"Generate ALL core product features for the Email Router in ONE complete response. "
+    f"DO NOT split features across multiple sections. The 6 features are: "
     f"List each feature with: Feature Name, Description, Key Functionality, and User Benefit. "
     f"Use the product specification: {product_spec}"
 )
@@ -99,8 +101,21 @@ program_manager_evaluation_agent = EvaluationAgent(
 persona_dev_engineer = "You are a Development Engineer, you are responsible for defining the development tasks for a product."
 # knowledge_dev_engineer = "Development tasks are defined by identifying what needs to be built to implement each user story."
 knowledge_dev_engineer = (
-    f"Development tasks are defined by identifying what needs to be built to implement each user story. "
-    f"For the product specification: {product_spec}"
+    f"Generate ALL development tasks for the Email Router in ONE complete response starting with Task ID: 1. "
+    f"DO NOT split tasks across multiple sections. Generate 6-8 tasks to implement the main features: "
+    f"Email Ingestion, Message Classification, Knowledge Base, Response Generation, Routing Logic, and User Interface. "
+    f"For 'Related User Story', use actual personas from the Email Router: "
+    f"'As a Customer Support Representative...', 'As a Subject Matter Expert (SME)...', or 'As an IT Administrator...' "
+    f"(NOT 'As a system user'). "
+    f"Format EACH task with:\n"
+    f"Task ID: [number starting from 1]\n"
+    f"Task Title: [title]\n"
+    f"Related User Story: As a [Customer Support Representative|SME|IT Administrator], I want...\n"
+    f"Description: [detailed description]\n"
+    f"Acceptance Criteria:\n- [criterion 1]\n- [criterion 2]\n"
+    f"Estimated Effort: [hours]\n"
+    f"Dependencies: [dependencies or None]\n\n"
+    f"Email Router specification: {product_spec}"
 )
 # Instantiate a development_engineer_knowledge_agent using 'persona_dev_engineer' and 'knowledge_dev_engineer'
 # (This is a necessary step before TODO 9. Students should add the instantiation code here.)
